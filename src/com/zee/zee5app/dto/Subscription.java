@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class Subscription  {
+public class Subscription {
 
 	private String type;
 	private Date dateOfPurchase;
@@ -15,6 +15,5 @@ public class Subscription  {
 	private boolean autoRenewal;
 	private Date expriryDate;
 	private String id;
-	
 
 }
