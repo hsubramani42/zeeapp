@@ -1,7 +1,10 @@
 package com.zee.zee5app.repository.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
+import com.zee.zee5app.dto.Register;
 import com.zee.zee5app.dto.Subscription;
 import com.zee.zee5app.repository.SubscriptionRepository;
 
@@ -12,8 +15,7 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepository {
 	}
 
 	private static SubscriptionRepositoryImpl subscriptionRepository = null;
-	private Subscription[] subscriptions = new Subscription[10];
-	private static int counter = 0;
+	private ArrayList<Subscription> subscriptions = new ArrayList<>();
 
 	public static SubscriptionRepositoryImpl getInstance() {
 		if (subscriptionRepository == null)
@@ -23,60 +25,40 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepository {
 
 	@Override
 	public String addSubscription(Subscription subscription) {
-		if (counter == subscriptions.length) {
-			Subscription temp[] = new Subscription[2 * subscriptions.length];
-			System.arraycopy(subscriptions, 0, temp, 0, subscriptions.length);
-		}
-		subscriptions[counter++] = subscription;
-		return "success";
+		return (subscriptions.add(subscription))?"Success! Object added":"Failed! Object not added.";
 	}
 
 	@Override
 	public String deleteSubscriptionById(String id) {
-		boolean found = false;
-		for (int i = 1; i <= this.counter; i++) {
-			if (subscriptions[i - 1] == null)
-				break;
-			if (subscriptions[i - 1].getId().equals(id)) {
-				found = true;
+		for(int i=0;i<subscriptions.size();i++)
+			if(subscriptions.get(i).getId().equals(id)) {
+				subscriptions.remove(i);
+				return "Success! Deleted.";
 			}
-			if (found) {
-				if (i != this.counter)
-					subscriptions[i - 1] = subscriptions[i];
-			}
-		}
-		if (found) {
-			subscriptions[--this.counter] = null;
-			return "success";
-		}
-		return "failed! No objects found";
+		return "Failed! No objects found.";
 	}
 
 	@Override
 	public String updateSubscriptionById(String id, Subscription subscription) {
-		for (int i = 0; i < this.counter; i++) {
-			if (subscriptions[i].getId().equals(id)) {
-				subscriptions[i] = subscription;
-				return "success";
+		for(int i=0;i<subscriptions.size();i++)
+			if(subscriptions.get(i).getId().equals(id)) {
+				subscriptions.set(i, subscription);
+				return "Success! Updated.";
 			}
-		}
-		return "failed";
+		return "Failed! No objects found.";
 	}
 
 	@Override
-	public Subscription getSubscriptionById(String id) {
-		for (Subscription subscription : subscriptions) {
-			if (subscription == null)
-				return null;
-			if (subscription.getId().equals(id))
-				return subscription;
-		}
-		return null;
+	public Optional<Subscription> getSubscriptionById(String id) {
+		for(Subscription subscription:subscriptions)
+			if(subscription.getId().equals(id))
+				return Optional.of(subscription);
+		return Optional.empty();
 	}
 
 	@Override
-	public Subscription[] getAllSubscriptions() {
-		return Arrays.copyOf(subscriptions, this.counter);
+	public ArrayList<Subscription> getAllSubscriptions() {
+		return subscriptions;
 	}
 
 }

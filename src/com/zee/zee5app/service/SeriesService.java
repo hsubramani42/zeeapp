@@ -1,5 +1,8 @@
 package com.zee.zee5app.service;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 import com.zee.zee5app.dto.Series;
 
 public interface SeriesService {
@@ -9,7 +12,7 @@ public interface SeriesService {
 
 	public String deleteSeriesById(String id);
 
-	public Series getSeriesById(String id);
+	public Optional<Series> getSeriesById(String id);
 
-	public Series[] getAllSeries();
+	public ArrayList<Series> getAllSeries();
 }

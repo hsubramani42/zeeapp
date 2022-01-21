@@ -1,7 +1,10 @@
 package com.zee.zee5app.repository.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
+import com.zee.zee5app.dto.Register;
 import com.zee.zee5app.dto.Series;
 import com.zee.zee5app.repository.SeriesRepository;
 
@@ -12,8 +15,7 @@ public class SeriesRepositoryImpl implements SeriesRepository {
 	}
 
 	private static SeriesRepositoryImpl seriesRepository = null;
-	private Series[] seriess = new Series[10];
-	private static int counter = 0;
+	private ArrayList<Series> seriess=new ArrayList<>();
 
 	public static SeriesRepositoryImpl getInstance() {
 		if (seriesRepository == null)
@@ -23,60 +25,40 @@ public class SeriesRepositoryImpl implements SeriesRepository {
 
 	@Override
 	public String addSeries(Series series) {
-		if (counter == seriess.length) {
-			Series temp[] = new Series[2 * seriess.length];
-			System.arraycopy(seriess, 0, temp, 0, seriess.length);
-		}
-		seriess[counter++] = series;
-		return "success";
-	}
-
-	@Override
-	public String deleteSeriesById(String id) {
-		boolean found = false;
-		for (int i = 1; i <= this.counter; i++) {
-			if (seriess[i - 1] == null)
-				break;
-			if (seriess[i - 1].getId().equals(id)) {
-				found = true;
-			}
-			if (found) {
-				if (i != this.counter)
-					seriess[i - 1] = seriess[i];
-			}
-		}
-		if (found) {
-			seriess[--this.counter] = null;
-			return "success";
-		}
-		return "failed! No objects found";
+		return (seriess.add(series))?"Success! Object added":"Failed! Object not added.";
 	}
 
 	@Override
 	public String updateSeriesById(String id, Series series) {
-		for (int i = 0; i < this.counter; i++) {
-			if (seriess[i].getId().equals(id)) {
-				seriess[i] = series;
-				return "success";
+		for(int i=0;i<seriess.size();i++)
+			if(seriess.get(i).getId().equals(id)) {
+				seriess.set(i, series);
+				return "Success! Updated.";
 			}
-		}
-		return "failed";
+		return "Failed! No objects found.";
 	}
 
 	@Override
-	public Series getSeriesById(String id) {
-		for (Series series : seriess) {
-			if (series == null)
-				return null;
-			if (series.getId().equals(id))
-				return series;
-		}
-		return null;
+	public String deleteSeriesById(String id) {
+		for(int i=0;i<seriess.size();i++)
+			if(seriess.get(i).getId().equals(id)) {
+				seriess.remove(i);
+				return "Success! Deleted.";
+			}
+		return "Failed! No objects found.";
 	}
 
 	@Override
-	public Series[] getAllSeries() {
-		return Arrays.copyOf(seriess, this.counter);
+	public Optional<Series> getSeriesById(String id) {
+		for(Series series:seriess)
+			if(series.getId().equals(id))
+				return Optional.of(series);
+		return Optional.empty();
+	}
+
+	@Override
+	public ArrayList<Series> getAllSeries() {
+		return seriess;
 	}
 
 }

@@ -1,5 +1,8 @@
 package com.zee.zee5app.service.impl;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 import com.zee.zee5app.dto.Movie;
 import com.zee.zee5app.repository.impl.MovieRepositoryImpl;
 import com.zee.zee5app.service.MovieService;
@@ -34,12 +37,12 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	public Movie getMovieById(String id) {
+	public Optional<Movie> getMovieById(String id) {
 		return this.movieRepository.getMovieById(id);
 	}
 
 	@Override
-	public Movie[] getAllMovies() {
+	public ArrayList<Movie> getAllMovies() {
 		return this.movieRepository.getAllMovies();
 	}
 }

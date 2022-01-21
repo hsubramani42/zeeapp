@@ -1,5 +1,8 @@
 package com.zee.zee5app.service;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 import com.zee.zee5app.dto.Movie;
 
 public interface MovieService {
@@ -9,7 +12,7 @@ public interface MovieService {
 
 	public String deleteMovieById(String id);
 
-	public Movie getMovieById(String id);
+	public Optional<Movie> getMovieById(String id);
 
-	public Movie[] getAllMovies();
+	public ArrayList<Movie> getAllMovies();
 }

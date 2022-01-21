@@ -1,8 +1,11 @@
 package com.zee.zee5app.repository.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 import com.zee.zee5app.dto.Movie;
+import com.zee.zee5app.dto.Register;
 import com.zee.zee5app.repository.MovieRepository;
 
 public class MovieRepositoryImpl implements MovieRepository {
@@ -12,8 +15,7 @@ public class MovieRepositoryImpl implements MovieRepository {
 	}
 
 	private static MovieRepositoryImpl movieRepository = null;
-	private Movie[] movies = new Movie[10];
-	private static int counter = 0;
+	private ArrayList<Movie> movies=new ArrayList<>();
 
 	public static MovieRepositoryImpl getInstance() {
 		if (movieRepository == null)
@@ -23,61 +25,40 @@ public class MovieRepositoryImpl implements MovieRepository {
 
 	@Override
 	public String addMovie(Movie movie) {
-		if (counter == movies.length) {
-			Movie temp[] = new Movie[2 * movies.length];
-			System.arraycopy(movies, 0, temp, 0, movies.length);
-			movies = temp;
-		}
-		movies[counter++] = movie;
-		return "success";
-	}
-
-	@Override
-	public String deleteMovieById(String id) {
-		boolean found = false;
-		for (int i = 1; i <= this.counter; i++) {
-			if (movies[i - 1] == null)
-				break;
-			if (movies[i - 1].getId().equals(id)) {
-				found = true;
-			}
-			if (found) {
-				if (i != this.counter)
-					movies[i - 1] = movies[i];
-			}
-		}
-		if (found) {
-			movies[--this.counter] = null;
-			return "success";
-		}
-		return "failed! No objects found";
+		return (movies.add(movie))?"Success! Object added":"Failed! Object not added.";
 	}
 
 	@Override
 	public String updateMovieById(String id, Movie movie) {
-		for (int i = 0; i < this.counter; i++) {
-			if (movies[i].getId().equals(id)) {
-				movies[i] = movie;
-				return "success";
+		System.out.println(movie);
+		for(int i=0;i<movies.size();i++)
+			if(movies.get(i).getId().equals(id)) {
+				movies.set(i, movie);
+				return "Success! Updated.";
 			}
-		}
-		return "failed";
+		return "Failed! No objects found.";
 	}
 
 	@Override
-	public Movie getMovieById(String id) {
-		for (Movie movie : movies) {
-			if (movie == null)
-				return null;
-			if (movie.getId().equals(id))
-				return movie;
-		}
-		return null;
+	public String deleteMovieById(String id) {
+		for(int i=0;i<movies.size();i++)
+			if(movies.get(i).getId().equals(id)) {
+				movies.remove(i);
+				return "Success! Deleted.";
+			}
+		return "Failed! No objects found.";
 	}
 
 	@Override
-	public Movie[] getAllMovies() {
-		return Arrays.copyOf(movies, this.counter);
+	public Optional<Movie> getMovieById(String id) {
+		for(Movie movie:movies)
+			if(movie.getId().equals(id))
+				return Optional.of(movie);
+		return Optional.empty();
 	}
 
+	@Override
+	public ArrayList<Movie> getAllMovies() {
+		return movies;
+	}
 }

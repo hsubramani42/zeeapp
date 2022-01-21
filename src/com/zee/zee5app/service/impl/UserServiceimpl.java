@@ -1,5 +1,8 @@
 package com.zee.zee5app.service.impl;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 import com.zee.zee5app.dto.Register;
 import com.zee.zee5app.repository.impl.UserRepositoryImpl;
 import com.zee.zee5app.service.UserService;
@@ -28,12 +31,12 @@ public class UserServiceimpl implements UserService {
 	}
 
 	@Override
-	public Register getUserById(String id) {
+	public Optional<Register> getUserById(String id) {
 		return this.userRepository.getUserById(id);
 	}
 
 	@Override
-	public Register[] getAllUsers() {
+	public ArrayList<Register> getAllUsers() {
 		return this.userRepository.getAllUsers();
 	}
 
@@ -43,8 +46,8 @@ public class UserServiceimpl implements UserService {
 	}
 
 	@Override
-	public String updateUser(String id, Register register) {
-		return this.userRepository.updateUser(id, register);
+	public String updateUserById(String id, Register register) {
+		return this.userRepository.updateUserById(id, register);
 	}
 
 }
