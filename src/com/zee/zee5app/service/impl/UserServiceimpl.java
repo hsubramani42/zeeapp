@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import com.zee.zee5app.dto.Register;
+import com.zee.zee5app.exception.IdNotFoundException;
 import com.zee.zee5app.repository.impl.UserRepositoryImpl;
 import com.zee.zee5app.service.UserService;
 
@@ -31,7 +32,7 @@ public class UserServiceimpl implements UserService {
 	}
 
 	@Override
-	public Optional<Register> getUserById(String id) {
+	public Optional<Register> getUserById(String id) throws IdNotFoundException {
 		return this.userRepository.getUserById(id);
 	}
 
@@ -41,7 +42,7 @@ public class UserServiceimpl implements UserService {
 	}
 
 	@Override
-	public String deleteUserById(String id) {
+	public String deleteUserById(String id) throws IdNotFoundException {
 		return this.userRepository.deleteUserById(id);
 	}
 
