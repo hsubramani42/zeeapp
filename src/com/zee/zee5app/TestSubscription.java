@@ -31,7 +31,7 @@ public class TestSubscription {
 		int i = 11;
 		try {
 			subscriptionRef = new Subscription("type-" + i, new Date(), (i % 2 == 0) ? true : false,
-					"country-" + (i % 2), "mode - " + i % 3, (i % 2 == 0) ? true : false, new Date(), "00000000" + i,
+					"country-" + (i % 2), "mode - " + i % 3, (i % 2 == 0) ? true : false, new Date(), "0000" + i,
 					500f);
 		} catch (InvalidAmountException | InvalidIdLengthException e1) {
 			// TODO Auto-generated catch block
@@ -50,7 +50,7 @@ public class TestSubscription {
 		// Valid Object
 		try {
 			subscriptionRef = new Subscription("type-" + i, new Date(), (i % 2 == 0) ? true : false,
-					"country-" + (i % 2), "mode - " + i % 3, (i % 2 == 0) ? true : false, new Date(), "00000000" + i,
+					"country-" + (i % 2), "mode - " + i % 3, (i % 2 == 0) ? true : false, new Date(), "000000122",
 					500f);
 
 		} catch (InvalidAmountException | InvalidIdLengthException e) {
