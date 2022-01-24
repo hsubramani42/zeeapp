@@ -1,6 +1,6 @@
 package com.zee.zee5app.repository;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.zee.zee5app.dto.Register;
@@ -12,10 +12,12 @@ public interface UserRepository {
 
 	public Optional<Register> getUserById(String id) throws IdNotFoundException;
 
-	public ArrayList<Register> getAllUsers();
+	public List<Register> getAllUsersList();
+	
+	public Register[] getAllUsers();
 
 	public String deleteUserById(String id) throws IdNotFoundException;
 
-	public String updateUserById(String id, Register register);
+	public String updateUserById(String id, Register register) throws IdNotFoundException;
 
 }

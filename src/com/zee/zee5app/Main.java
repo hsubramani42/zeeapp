@@ -56,7 +56,7 @@ public class Main {
 			System.out.println("\nAdded User: " + i + "\nStatus: " + result);
 
 		}
-		String uid = "00000"+10;
+		String uid = "00000" + 10;
 
 //		for (Register user : userService.getAllUsers()) {
 //			System.out.println("\nUser Object: " + user);
@@ -74,53 +74,35 @@ public class Main {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
+		System.out.println("\nCheck User: " + uid);
 
 		try {
-			System.out.println("\nCheck User: " + uid + "\nStatus: " + userService.getUserById(uid+"100").isPresent());
+			System.out.println("Status: " + userService.getUserById(uid + "100").isPresent());
 		} catch (IdNotFoundException e1) {
-			
+
 			e1.printStackTrace();
 		}
 
-		i=11;
-		for (; i <= 21; i++) {
-			register = new Register();
-			String result = null;
-			try {
-				register = new Register("00000" + i, "User", "__" + i, "user-" + i + "@gmail.com", "pass@123@" + i);
-				// System.out.println("Register Object: " + register);
-				result = userService.addUser(register);
-			} catch (InvalidIdLengthException e) {
-				e.printStackTrace();
-			} catch (InvalidNameException e) {
-				e.printStackTrace();
-			} catch (InvalidEmailFormatException e) {
-				e.printStackTrace();
-			} catch (InvalidPasswordException e) {
-				e.printStackTrace();
-			}
-
-			System.out.println("\nAdded User: " + i + "\nStatus: " + result);
-
-		}
-		String mid = "00000"+21;
+		i--;
+		String mid = "00000" + 9;
 		Register modify;
 		try {
-			i=10;
+			i = 10;
 			modify = new Register("00000" + i, "User", "__" + i, "user-" + i + "@gmail.com", "pass@123@" + i);
 			System.out.println("\nModify User: " + mid + "\nStatus: " + (userService.updateUserById(mid, modify)));
 
 		} catch (InvalidNameException | InvalidIdLengthException | InvalidEmailFormatException
-				| InvalidPasswordException e) {
+				| InvalidPasswordException | IdNotFoundException e) {
 			e.printStackTrace();
-		};
-		
+		}
+		;
+
 		System.out.println("All registrations:");
 		for (Register user : userService.getAllUsers()) {
 			System.out.println("\nUser Object: " + user);
 		}
-		
-		userService.getAllUsers().forEach(e -> System.out.println(e));
+		System.out.println("All registrations list:");
+		userService.getAllUsersList().forEach(e -> System.out.println(e));
 	}
 
 }

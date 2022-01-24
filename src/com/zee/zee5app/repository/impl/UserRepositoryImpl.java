@@ -1,26 +1,24 @@
 package com.zee.zee5app.repository.impl;
 
+
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.zee.zee5app.dto.Register;
 import com.zee.zee5app.exception.IdNotFoundException;
-import com.zee.zee5app.repository.UserRepository;;
+import com.zee.zee5app.repository.UserRepository;
 
 public class UserRepositoryImpl implements UserRepository {
-	private Set<Register> registers=new LinkedHashSet<>();
+	private Set<Register> registers=new TreeSet<>();
+	static private UserRepositoryImpl repo = null;
 
 	private UserRepositoryImpl() {
 
 	}
 
-	static UserRepositoryImpl repo = null;
 
 	public static UserRepositoryImpl getInstance() {
 
@@ -32,42 +30,40 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public String addUser(Register register) {
-		return (registers.add(register))?"Success! Object added":"Failed! Object not added.";
+		boolean status = registers.add(register);
+		return status ? "success" : "failed";
 	}
 
 	@Override
-	public String updateUserById(String id, Register register) {
-//		for(int i=0;i<registers.size();i++)
-//			if(registers.get(i).getId().equals(id)) {
-//				registers.set(i, register);
-//				return "Success! Updated.";
-//			}
-//		return "Failed! No objects found.";
-		return null;
-	}
-
-	@Override
-	public Optional<Register> getUserById(String id) throws IdNotFoundException  {
-		for(Register register:registers)
-			if(register.getId().equals(id)) {
+	public Optional<Register> getUserById(String id) throws IdNotFoundException {
+		for (Register register : registers)
+			if (register.getId().equals(id))
 				return Optional.of(register);
-			}
-		Register user = null;
-		return Optional.of(Optional.ofNullable(user).orElseThrow(()-> new IdNotFoundException("Id not found")));
+		Register notFound = null;
+		return Optional.of(Optional.ofNullable(notFound).orElseThrow(() -> new IdNotFoundException("Invalid Id")));
 	}
-	
 
 	@Override
-	public ArrayList<Register> getAllUsers() {
-//		Collections.sort(registers);
-//		return registers;
-		return new ArrayList<Register>(registers);
+	public List<Register> getAllUsersList() {
+		return new ArrayList<>(registers);
+	}
+
+	@Override
+	public Register[] getAllUsers() {
+		return registers.toArray(new Register[registers.size()]);
 	}
 
 	@Override
 	public String deleteUserById(String id) throws IdNotFoundException {
-		boolean result = registers.remove(this.getUserById(id).get());
-		return result?"Success! deleted!":"Failed! object not found.";
+		boolean status = registers.remove(this.getUserById(id).get());
+		return status ? "success" : "failed";
 	}
 
+	@Override
+	public String updateUserById(String id, Register register) throws IdNotFoundException {
+		boolean status = registers.remove(this.getUserById(id).get());
+		if (status)
+			status = registers.add(register);
+		return status ? "success" : "failed";
+	}
 }
